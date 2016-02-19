@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/VectorWatch/storageprovider-filesystem#readme",
   "dependencies": {
+    "bluebird": "^3.3.1",
     "vectorwatch-storageprovider-abstract": "^1.0.0"
   }
 }
