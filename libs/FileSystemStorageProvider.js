@@ -42,7 +42,13 @@ FileSystemStorageProvider.prototype.removeUserSettingsFile = function(channelLab
 FileSystemStorageProvider.prototype.readFile = function(fileName) {
     return new Promise(function(resolve, reject) {
         fs.readFile(fileName, function(err, data) {
-            if (err) return reject(err);
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    return resolve();
+                }
+
+                return reject(err);
+            }
 
             try {
                 resolve(JSON.parse(data));
