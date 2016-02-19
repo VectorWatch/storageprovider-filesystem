@@ -1,0 +1,25 @@
+{
+  "name": "vectorwatch-storageprovider-filesystem",
+  "version": "1.0.0",
+  "description": "A VectorWatch StorageProvider that stores data in files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VectorWatch/storageprovider-filesystem.git"
+  },
+  "keywords": [
+    "vectorwatch"
+  ],
+  "author": "alin.roman@zitec.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VectorWatch/storageprovider-filesystem/issues"
+  },
+  "homepage": "https://github.com/VectorWatch/storageprovider-filesystem#readme",
+  "dependencies": {
+    "vectorwatch-storageprovider-abstract": "^1.0.0"
+  }
+}
