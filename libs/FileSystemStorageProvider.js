@@ -104,7 +104,7 @@ FileSystemStorageProvider.prototype.storeUserSettingsAsync = function(channelLab
     });
 };
 
-FileSystemStorageProvider.prototype.removeUserSettingAsync = function(channelLabel) {
+FileSystemStorageProvider.prototype.removeUserSettingsAsync = function(channelLabel) {
     return this.readUserSettingsFile(channelLabel).bind(this).then(function(userSettingsObject) {
         if (userSettingsObject) {
             userSettingsObject.count--;
