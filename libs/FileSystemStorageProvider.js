@@ -4,6 +4,11 @@ var Promise = require('bluebird');
 var fs = require('fs');
 var path = require('path');
 
+/**
+ * @param directory {String}
+ * @constructor
+ * @augments StorageProviderAbstract
+ */
 function FileSystemStorageProvider(directory) {
     StorageProviderAbstract.call(this);
 
@@ -13,32 +18,64 @@ function FileSystemStorageProvider(directory) {
 }
 util.inherits(FileSystemStorageProvider, StorageProviderAbstract);
 
+/**
+ * Reads the auth from a file
+ * @param credentialsKey {String}
+ * @returns {Promise.<Object>}
+ */
 FileSystemStorageProvider.prototype.readAuthFile = function(credentialsKey) {
     var fileName = path.join(this.directory, credentialsKey + '.auth.json');
     return this.readFile(fileName);
 };
 
+/**
+ * Reads the user settings from a file
+ * @param channelLabel {String}
+ * @returns {Promise.<Object>}
+ */
 FileSystemStorageProvider.prototype.readUserSettingsFile = function(channelLabel) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
     return this.readFile(fileName);
 };
 
+/**
+ * Writes the auth in a file
+ * @param credentialsKey {String}
+ * @param data {Object}
+ * @returns {Promise}
+ */
 FileSystemStorageProvider.prototype.writeAuthFile = function(credentialsKey, data) {
     var fileName = path.join(this.directory, credentialsKey + '.auth.json');
     return this.writeFile(fileName, data);
 };
 
+/**
+ * Writes the user settings in a file
+ * @param channelLabel {String}
+ * @param data {Object}
+ * @returns {Promise.<Object>}
+ */
 FileSystemStorageProvider.prototype.writeUserSettingsFile = function(channelLabel, data) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
-    return this.readFile(fileName, data);
+    return this.writeFile(fileName, data);
 };
 
+/**
+ * Removes the user settings file
+ * @param channelLabel {String}
+ * @returns {Promise}
+ */
 FileSystemStorageProvider.prototype.removeUserSettingsFile = function(channelLabel) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
     fs.unlinkSync(fileName);
     return Promise.resolve();
 };
 
+/**
+ * Reads the data from a file
+ * @param fileName {String}
+ * @returns {Promise<Object>}
+ */
 FileSystemStorageProvider.prototype.readFile = function(fileName) {
     return new Promise(function(resolve, reject) {
         fs.readFile(fileName, function(err, data) {
@@ -59,6 +96,12 @@ FileSystemStorageProvider.prototype.readFile = function(fileName) {
     });
 };
 
+/**
+ * Writes the data in a file
+ * @param fileName {String}
+ * @param data {Object}
+ * @returns {Promise}
+ */
 FileSystemStorageProvider.prototype.writeFile = function(fileName, data) {
     return new Promise(function(resolve, reject) {
         fs.writeFile(fileName, JSON.stringify(data), function(err) {
@@ -69,14 +112,23 @@ FileSystemStorageProvider.prototype.writeFile = function(fileName, data) {
 };
 
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.storeAuthTokensAsync = function(credentialsKey, authTokens) {
     return this.writeAuthFile(credentialsKey, authTokens);
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.getAuthTokensByCredentialsKeyAsync = function(credentialsKey) {
     return this.readAuthFile(credentialsKey);
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.getAuthTokensByChannelLabelAsync = function(channelLabel) {
     return this.readUserSettingsFile(channelLabel).bind(this).then(function(userSettingsObject) {
         var credentialsKey = (userSettingsObject || {}).credentialsKey;
@@ -88,6 +140,9 @@ FileSystemStorageProvider.prototype.getAuthTokensByChannelLabelAsync = function(
     });
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.storeUserSettingsAsync = function(channelLabel, userSettings, credentialsKey) {
     return this.readUserSettingsFile(channelLabel).bind(this).then(function(userSettingsObject) {
         if (!userSettingsObject) {
@@ -104,6 +159,9 @@ FileSystemStorageProvider.prototype.storeUserSettingsAsync = function(channelLab
     });
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.removeUserSettingsAsync = function(channelLabel) {
     return this.readUserSettingsFile(channelLabel).bind(this).then(function(userSettingsObject) {
         if (userSettingsObject) {
@@ -117,6 +175,9 @@ FileSystemStorageProvider.prototype.removeUserSettingsAsync = function(channelLa
     });
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.getAllUserSettingsAsync = function() {
     var _this = this;
     return new Promise(function(resolve, reject) {
@@ -135,6 +196,9 @@ FileSystemStorageProvider.prototype.getAllUserSettingsAsync = function() {
     });
 };
 
+/**
+ * @inheritdoc
+ */
 FileSystemStorageProvider.prototype.getUserSettingsAsync = function(channelLabel) {
     return this.readUserSettingsFile(channelLabel).bind(this).then(function(userSettingsObject) {
         return this.readAuthFile(userSettingsObject.credentialsKey).bind(this).then(function(authTokens) {
