@@ -1,6 +1,6 @@
 {
   "name": "vectorwatch-storageprovider-filesystem",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A VectorWatch StorageProvider that stores data in files",
   "main": "index.js",
   "scripts": {

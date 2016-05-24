@@ -33,7 +33,7 @@ FileSystemStorageProvider.prototype.readAuthFile = function(credentialsKey) {
  * @param channelLabel {String}
  * @returns {Promise.<Object>}
  */
-FileSystemStorageProvider.prototype.readUserSettingsFile = function(channelLabel) {
+FileSystemStorageProvider.prototype.readUserSettingsFile = function(credentialsKey) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
     return this.readFile(fileName);
 };
@@ -55,7 +55,7 @@ FileSystemStorageProvider.prototype.writeAuthFile = function(credentialsKey, dat
  * @param data {Object}
  * @returns {Promise.<Object>}
  */
-FileSystemStorageProvider.prototype.writeUserSettingsFile = function(channelLabel, data) {
+FileSystemStorageProvider.prototype.writeUserSettingsFile = function(credentialsKey, data) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
     return this.writeFile(fileName, data);
 };
@@ -65,7 +65,7 @@ FileSystemStorageProvider.prototype.writeUserSettingsFile = function(channelLabe
  * @param channelLabel {String}
  * @returns {Promise}
  */
-FileSystemStorageProvider.prototype.removeUserSettingsFile = function(channelLabel) {
+FileSystemStorageProvider.prototype.removeUserSettingsFile = function(credentialsKey) {
     var fileName = path.join(this.directory, credentialsKey + '.userSettings.json');
     fs.unlinkSync(fileName);
     return Promise.resolve();
